@@ -10,9 +10,11 @@ import UIKit
 
 class Movie {
     
-    func getSearchedMovies(httpMoviesRequest : [String : Any]) -> MoviesResponse? {
-        let moviesResponse = MoviesResponse(res: httpMoviesRequest)
-        return moviesResponse
+    static func getSearchedMovies(query : String, apiKey : String, page : Int, completion : @escaping (MoviesResponse) -> ()) {
+        let httpMoviesRequest = HttpMoviesRequest()
+        httpMoviesRequest.searchMovies(query: query, apiKey: apiKey, page: page, completion: {httpMoviesRequest in
+            completion(MoviesResponse(res: httpMoviesRequest)!)
+        })
     }
 }
 

@@ -88,20 +88,13 @@
 		B55DFC8B2059686A00BFDACD /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B55DFC8F205975F800BFDACD /* HttpMoviesRequest.swift */,
 				B55DFC822059582D00BFDACD /* MovieData.swift */,
 				B55DFC84205958D100BFDACD /* Movie.swift */,
 				B55DFC86205959D300BFDACD /* MoviesResponse.swift */,
 				B55DFC8C20596C9900BFDACD /* MovieProtocol.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		B55DFC8E205975DE00BFDACD /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				B55DFC8F205975F800BFDACD /* HttpMoviesRequest.swift */,
-			);
-			path = Controller;
 			sourceTree = "<group>";
 		};
 		F50BD29E1E37A41D008821F8 = {
@@ -127,7 +120,6 @@
 		F50BD2A91E37A41D008821F8 /* TheMovieDB */ = {
 			isa = PBXGroup;
 			children = (
-				B55DFC8E205975DE00BFDACD /* Controller */,
 				B55DFC8B2059686A00BFDACD /* Model */,
 				F50BD2AA1E37A41D008821F8 /* AppDelegate.swift */,
 				F50BD2AC1E37A41D008821F8 /* ViewController.swift */,

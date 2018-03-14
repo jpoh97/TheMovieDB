@@ -10,18 +10,12 @@ import Alamofire
 
 class HttpMoviesRequest {
     
-    func searchMovies(query : String, apiKey : String, page : Int, completion : @escaping (MoviesResponse) -> ()) {
-        var querySearchString = "Nemo"
-        let movies : Movie = Movie()
-        
-        if !query.isEmpty {
-            querySearchString = query
-        }
+    func searchMovies(query : String, apiKey : String, page : Int, completion : @escaping ([String : Any]) -> ()) {
         Alamofire.request(
             "https://api.themoviedb.org/3/search/movie",
             parameters : [
                 "api_key" : apiKey,
-                "query" : querySearchString,
+                "query" : query,
                 "page" : page
             ]
             ).responseJSON { response in
@@ -32,11 +26,8 @@ class HttpMoviesRequest {
                 guard let responseJSON = response.result.value as? [String : Any] else {
                     print("Invalid tag information received from the service")
                     return
-                }
-                
-                let foundMovies = movies.getSearchedMovies(httpMoviesRequest : responseJSON)
-                
-                completion(foundMovies!)
+                }                
+                completion(responseJSON)
         }
     }
 }

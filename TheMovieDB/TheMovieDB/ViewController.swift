@@ -13,10 +13,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var searchMovieTextField: UITextField!
     @IBOutlet weak var responseSearchMovieLabel: UILabel!
     
-    var querySearchString = ""
-    var movies : Movie = Movie()
     var apiKey = "1f4d7de5836b788bdfd897c3e0d0a24b"
     var page = 1
+    var responseSearchMovie = ""
+    var movies : MoviesResponse?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,11 +29,13 @@ class ViewController: UIViewController {
     }
     
     @IBAction func searchMovieAction(_ sender: UIButton) {
-        let httpMoviesRequest = HttpMoviesRequest()
-        httpMoviesRequest.searchMovies(query: searchMovieTextField.text!, apiKey: apiKey, page: page, completion: {moviesResponse in
+        responseSearchMovie = ""
+        Movie.getSearchedMovies(query: searchMovieTextField.text!.isEmpty ? "Nemo" : searchMovieTextField.text!, apiKey: apiKey, page: page, completion: {[weak self] moviesResponse in
+            self?.movies = moviesResponse
             for movie in moviesResponse.movies! {
-                print(movie.title)
+                self?.responseSearchMovie += movie.title + "\n"
             }
+            self?.responseSearchMovieLabel.text = self?.responseSearchMovie
         })
     }
     
