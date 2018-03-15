@@ -11,6 +11,7 @@ import Alamofire
 class HttpMoviesRequest {
     
     func searchMovies(query : String, page : Int, completion : @escaping ([String : Any]) -> ()) {
+        
         Alamofire.request(MovieRouter.search(query, page)).responseJSON { response in
                 guard response.result.isSuccess else {
                     print("Error while fetching movies: \(response.result.error)")
