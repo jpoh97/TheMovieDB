@@ -11,5 +11,5 @@ import UIKit
 protocol ListCell : class {
     var title : UILabel! { get set }
     var overview : UILabel! { get set }
-//    var image : UIImageView! { get }
+    var imageMovie : UIImageView! { get set }
 }

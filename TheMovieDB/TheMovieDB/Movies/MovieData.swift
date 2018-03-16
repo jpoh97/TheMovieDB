@@ -13,14 +13,14 @@ class MovieData : MovieProtocol {
     var id : Int
     var voteAverage : Double
     var overview : String
-    var poster : UIImage
+    var posterPath : String
     
-    init?(id : Int, title : String, voteAverage : Double, overview : String) {
+    init?(id : Int, title : String, voteAverage : Double, overview : String, posterPath : String) {
         self.id = id
         self.title = title
         self.voteAverage = voteAverage
         self.overview = overview
-        self.poster = UIImage()
+        self.posterPath = posterPath        
     }
 }
 

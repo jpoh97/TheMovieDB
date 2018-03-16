@@ -12,6 +12,7 @@ class ListCollectionViewCell : UICollectionViewCell, ListCell {
     
     @IBOutlet weak var title : UILabel!
     @IBOutlet weak var overview: UILabel!
-//    @IBOutlet weak var image : UIImageView!
+    @IBOutlet weak var imageMovie : UIImageView!
+    
 }
 

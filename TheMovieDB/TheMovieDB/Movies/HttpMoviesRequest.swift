@@ -14,7 +14,7 @@ class HttpMoviesRequest {
         
         Alamofire.request(MovieRouter.search(query, page)).responseJSON { response in
                 guard response.result.isSuccess else {
-                    print("Error while fetching movies: \(response.result.error)")
+                    print("Error while fetching movies: \(String(describing: response.result.error))")
                     return
                 }
                 guard let responseJSON = response.result.value as? [String : Any] else {
@@ -28,7 +28,7 @@ class HttpMoviesRequest {
     func getList(page : Int, completion : @escaping ([String : Any]) -> ()) {
         Alamofire.request(MovieRouter.list(page)).responseJSON { response in
             guard response.result.isSuccess else {
-                print("Error while fetching movies: \(response.result.error)")
+                print("Error while fetching movies: \(String(describing: response.result.error))")
                 return
             }
             guard let responseJSON = response.result.value as? [String : Any] else {

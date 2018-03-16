@@ -26,6 +26,8 @@ public enum MovieRouter: URLRequestConvertible {
                 return "/movie/popular"
             case TypeOfLists.topRated:
                 return "/movie/top_rated"
+            case TypeOfLists.upcoming:
+                return "/movie/upcoming"
             }
         case .search:
             return "/search/movie"
@@ -55,4 +57,5 @@ enum TypeOfLists {
     case nowPlaying
     case popular
     case topRated
+    case upcoming
 }

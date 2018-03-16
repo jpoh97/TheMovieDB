@@ -27,7 +27,8 @@ class MoviesResponse {
                 id: movie["id"] as! Int,
                 title : movie["title"] as! String,
                 voteAverage : movie["vote_average"] as! Double,
-                overview : movie["overview"] as! String) else {
+                overview : movie["overview"] as! String,
+                posterPath : movie["poster_path"] as! String) else {
                 fatalError("La pelicula esta incompleta")
             }
             self.movies!.append(resMovie)

@@ -13,5 +13,5 @@ protocol MovieProtocol {
     var id : Int { get set }
     var voteAverage : Double { get set }
     var overview : String { get set }
-    var poster : UIImage { get set }
+    var posterPath : String { get set }
 }

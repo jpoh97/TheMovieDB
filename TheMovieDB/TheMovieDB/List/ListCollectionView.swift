@@ -37,8 +37,10 @@ class ListCollectionView : UICollectionView, List {
 
 private extension ListCollectionView {
     func configure() {
-        self.register(ListCollectionViewCell.self, forCellWithReuseIdentifier: cellIdentifier)
+//        self.register(ListCollectionViewCell.self, forCellWithReuseIdentifier: cellIdentifier)
+        self.register(UINib(nibName: "CustomCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: cellIdentifier)
         dataSource = self
+        delegate = self
         configureFlowLayout()
     }
     
@@ -48,8 +50,7 @@ private extension ListCollectionView {
         viewFlowLayout.minimumInteritemSpacing = middleSpaceBetweenCells
         viewFlowLayout.minimumLineSpacing = bottomSpaceBetweenCells
         viewFlowLayout.sectionInset = UIEdgeInsetsMake(topPadding, leftPadding, 0, rightPadding)
-        // viewFlowLayout.scrollDirection = .horizontal
-        
+        viewFlowLayout.scrollDirection = .horizontal        
         backgroundColor = UIColor.clear
         collectionViewLayout = viewFlowLayout
     }
@@ -62,18 +63,16 @@ extension ListCollectionView : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath : IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath)
-        
         listDelegate?.configureCell(cell: cell as! ListCell, index: indexPath.row)
         return cell
     }
 }
 
-extension ListCollectionView : UICollectionViewDelegateFlowLayout {
+extension ListCollectionView : UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let collectionWidth = collectionView.bounds.width
         let blankSpaces = leftPadding + middleSpaceBetweenCells
         let width = collectionWidth / CGFloat(cellsPerRow) - blankSpaces
-        
         return CGSize(width: width, height: cellHeight)
     }
 }

@@ -6,6 +6,8 @@
 //  Copyright © 2018 Globant. All rights reserved.
 //
 
+import UIKit
+
 protocol List : class {
     weak var listDelegate : ListDelegate? { get set }
     

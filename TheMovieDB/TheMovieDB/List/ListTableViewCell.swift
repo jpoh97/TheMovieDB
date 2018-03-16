@@ -10,8 +10,9 @@ import UIKit
 
 class ListTableViewCell : UITableViewCell, ListCell {
     
-    weak var title : UILabel!
-    weak var overview : UILabel!
-//    @IBOutlet weak var image : UIImageView!
+    @IBOutlet weak var title : UILabel!
+    @IBOutlet weak var overview : UILabel!
+    @IBOutlet weak var imageMovie : UIImageView!
+  
 }
 
