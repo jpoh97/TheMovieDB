@@ -15,10 +15,12 @@ class HttpMoviesRequest {
         Alamofire.request(MovieRouter.search(query, page)).responseJSON { response in
                 guard response.result.isSuccess else {
                     print("Error while fetching movies: \(String(describing: response.result.error))")
+                    completion([:])
                     return
                 }
                 guard let responseJSON = response.result.value as? [String : Any] else {
                     print("Invalid tag information received from the service")
+                    completion([:])
                     return
                 }                
                 completion(responseJSON)
@@ -29,10 +31,12 @@ class HttpMoviesRequest {
         Alamofire.request(MovieRouter.list(page)).responseJSON { response in
             guard response.result.isSuccess else {
                 print("Error while fetching movies: \(String(describing: response.result.error))")
+                completion([:])
                 return
             }
             guard let responseJSON = response.result.value as? [String : Any] else {
                 print("Invalid tag information received from the service")
+                completion([:])
                 return
             }
             completion(responseJSON)

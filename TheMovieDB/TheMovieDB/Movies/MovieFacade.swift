@@ -21,7 +21,7 @@ class MovieFacade {
     
     static func getList(page : Int, typeOfList : TypeOfLists, completion : @escaping (MoviesResponse) -> ()) {
         MovieRouter.typeOfList = typeOfList
-        httpMoviesRequest.getList(page: page, completion: {httpMoviesRequest in
+        httpMoviesRequest.getList(page: page, completion: {httpMoviesRequest in // pasar typeOfList
             completion(MoviesResponse(res: httpMoviesRequest)!)
         })
     }

@@ -33,5 +33,5 @@ class MoviesResponse {
             }
             self.movies!.append(resMovie)
         }
-    }
+    } // Convenience init
 }

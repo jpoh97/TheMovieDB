@@ -68,7 +68,7 @@ extension ListCollectionView : UICollectionViewDataSource {
     }
 }
 
-extension ListCollectionView : UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
+extension ListCollectionView : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let collectionWidth = collectionView.bounds.width
         let blankSpaces = leftPadding + middleSpaceBetweenCells
