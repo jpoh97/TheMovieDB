@@ -9,7 +9,7 @@
 import UIKit
 import AlamofireImage
 
-class MoviesViewController: UIViewController, ListDelegate, UISearchBarDelegate {
+class MoviesViewController: UIViewController, ListDelegate {
 
     @IBOutlet weak var searchMoviesBar: UISearchBar!
     @IBOutlet weak var containerView: UIView!
@@ -32,11 +32,7 @@ class MoviesViewController: UIViewController, ListDelegate, UISearchBarDelegate 
         getList()
         containerView.autoresizesSubviews = true
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
+        
     // SEARCH ACTION
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar){
         print("end searching --> Close Keyboard")
@@ -82,10 +78,12 @@ class MoviesViewController: UIViewController, ListDelegate, UISearchBarDelegate 
             cell.overview.text = moviesResponse?.movies![index].overview ?? ""
         }
         // Configure image
-        guard let url = try? "https://image.tmdb.org/t/p/w154\(moviesResponse!.movies![index].posterPath)".asURL() else {
-            fatalError("Error en la ruta de la imagen")
+        if let imagePath = moviesResponse!.movies![index].posterPath {
+            guard let url = try? "https://image.tmdb.org/t/p/w154\(imagePath)".asURL() else {
+                fatalError("Error en la ruta de la imagen")
+            }
+            cell.imageMovie.af_setImage(withURL: url)
         }
-        cell.imageMovie.af_setImage(withURL: url)
     }
     
     

@@ -9,9 +9,9 @@
 import UIKit
 
 protocol MovieProtocol {
-    var title : String { get set }
-    var id : Int { get set }
-    var voteAverage : Double { get set }
-    var overview : String { get set }
-    var posterPath : String { get set }
+    var title : String? { get set }
+    var id : Int? { get set }
+    var voteAverage : Double? { get set }
+    var overview : String? { get set }
+    var posterPath : String? { get set }
 }

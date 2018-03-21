@@ -13,25 +13,16 @@ class MoviesResponse {
     var page : Int?
     var totalPages : Int?
     
-    init?(res : [String : Any]){
-        guard let page = res["page"] as? Int,
-            let totalPages = res["total_pages"] as? Int,
-            let resMovies = res["results"] as? [[String: Any]] else {
-                return nil
-        }
-        self.page = page
-        self.totalPages = totalPages
-        self.movies = [MovieProtocol]()
-        for movie in resMovies {
-            guard let resMovie = MovieData(
-                id: movie["id"] as! Int,
-                title : movie["title"] as! String,
-                voteAverage : movie["vote_average"] as! Double,
-                overview : movie["overview"] as! String,
-                posterPath : movie["poster_path"] as! String) else {
-                fatalError("La pelicula esta incompleta")
-            }
-            self.movies!.append(resMovie)
-        }
-    } // Convenience init
+    init?(page : Int?, totalPages : Int?, movies : [[String: Any]]) {
+        self.page = page ?? 0
+        self.totalPages = totalPages ?? 0
+        self.movies = movies.map { MovieData($0)! }
+    }
+    
+    convenience init?(res : [String : Any]) {
+        let page = res["page"] as? Int
+        let totalPages = res["total_pages"] as? Int
+        let resMovies = res["results"] as? [[String: Any]]
+        self.init(page: page, totalPages: totalPages, movies: resMovies ?? [[:]])
+    }
 }
