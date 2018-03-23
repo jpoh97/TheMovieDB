@@ -8,7 +8,12 @@
 
 import UIKit
 
-class MovieFacade {
+protocol MoviesService {
+    static func getSearchedMovies(query : String, page : Int, completion : @escaping (MoviesResponse) -> ())
+    static func getList(page : Int, typeOfList : TypeOfLists, completion : @escaping (MoviesResponse) -> ())
+}
+
+class MovieFacade : MoviesService {
     
     private static var httpMoviesRequest = HttpMoviesRequest()
     

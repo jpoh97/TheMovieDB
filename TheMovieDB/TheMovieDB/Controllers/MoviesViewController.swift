@@ -9,27 +9,21 @@
 import UIKit
 import AlamofireImage
 
-class MoviesViewController: UIViewController, ListDelegate {
+class MoviesViewController: UIViewController {
 
     @IBOutlet weak var searchMoviesBar: UISearchBar!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var switchButton: UIBarButtonItem!
     
-    var page = 1
-    var moviesResponse : MoviesResponse?
-    var listOfMovies : List!
-    var isTableViewActive = true
-    var selectedSegmentIndex = 0
-    var categoryOfMovies = TypeOfLists.topRated{
-        didSet {
-            getList()
-        }
-    }
+    fileprivate var presenter : MoviesPresenter!
+    fileprivate var listOfMovies : List!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        getList()
+        presenter = MoviesPresenter(view: self as MoviesView, service: MovieFacade.self)
+        presenter.getList()
         containerView.autoresizesSubviews = true
     }
         
@@ -41,86 +35,13 @@ class MoviesViewController: UIViewController, ListDelegate {
     
     // SEGMENTED CONTROL ACTION
     @IBAction func getMoviesAction(_ sender: UISegmentedControl) {
-        selectedSegmentIndex = segmentedControl.selectedSegmentIndex
-        switch selectedSegmentIndex {
-        case 0:
-            categoryOfMovies = TypeOfLists.topRated
-        case 1:
-            categoryOfMovies = TypeOfLists.popular
-        case 2:
-            categoryOfMovies = TypeOfLists.nowPlaying
-        case 3:
-            categoryOfMovies = TypeOfLists.upcoming
-        default:
-            fatalError("Error en el segmented control")
-        }
+        presenter.selectedSegmentIndex = segmentedControl.selectedSegmentIndex
+
     }
     
     // SWITCH
     @IBAction func switchTableCollection(_ sender: UIBarButtonItem) {
-        (listOfMovies as! UIView).removeFromSuperview()
-        if(isTableViewActive) {
-            switchButton.title = "table"
-        } else {
-            switchButton.title = "collection"
-        }
-        isTableViewActive = !isTableViewActive
-        changeTypeOfList()
-    }
-    
-    func numberOfCells() -> Int {
-        return moviesResponse!.movies!.count
-    }
-    
-    func configureCell(cell: ListCell, index: Int) {
-        cell.title.text = moviesResponse?.movies![index].title
-        if(isTableViewActive) {
-            cell.overview.text = moviesResponse?.movies![index].overview ?? ""
-        }
-        // Configure image
-        if let imagePath = moviesResponse!.movies![index].posterPath {
-            guard let url = try? "https://image.tmdb.org/t/p/w154\(imagePath)".asURL() else {
-                fatalError("Error en la ruta de la imagen")
-            }
-            cell.imageMovie.af_setImage(withURL: url)
-        }
-    }
-    
-    
-    
-    func searchMovie() {
-        MovieFacade.getSearchedMovies(query: searchMoviesBar.text!.isEmpty ? "Nemo" : searchMoviesBar.text!, page: page, completion: {[weak self] moviesResponse in
-            self?.moviesResponse = moviesResponse
-            self?.updateListOfMovies()
-        })
-    }
-    
-    func getList() {
-        MovieFacade.getList(page: page, typeOfList: categoryOfMovies, completion: {[weak self] moviesResponse in
-            self?.moviesResponse = moviesResponse
-            self?.changeTypeOfList()
-            self?.updateListOfMovies()
-        })
-    }
-    
-    func updateListOfMovies() {
-        listOfMovies.reloadAllData()
-    }
-    
-    
-    func changeTypeOfList() {
-        // Configuro la lista dependiendo de si va a ser tabla o colección
-        (listOfMovies as? UIView)?.removeFromSuperview()
-        if(isTableViewActive) {
-            listOfMovies = ListTableView(frame: CGRect(x: 0, y: 0, width: (containerView.bounds.width), height: (containerView.bounds.height)))
-        } else {
-            listOfMovies = ListCollectionView(frame: CGRect(x: 0, y: 0, width: (containerView.bounds.width), height: (containerView.bounds.height)))
-        }
-        listOfMovies.listDelegate = self
-        listOfMovies.reloadAllData()
-        
-        // Agrego constraints a la vista agregada
-        addConstraintsToListOfMovies()
+        presenter.isTableViewActive = !presenter.isTableViewActive
     }
     
     func addConstraintsToListOfMovies() {
@@ -136,9 +57,51 @@ class MoviesViewController: UIViewController, ListDelegate {
     }
     
     override func viewLayoutMarginsDidChange() {
-        if(!isTableViewActive) {
+        if(!presenter.isTableViewActive) {
             updateListOfMovies()
         }
     }
     
+}
+
+extension MoviesViewController : ListDelegate {
+    func numberOfCells() -> Int {
+        return presenter.moviesResponse!.movies!.count
+    }
+    
+    func configureCell(cell: ListCell, index: Int) {
+        cell.title.text = presenter.moviesResponse?.movies![index].title
+        if(presenter.isTableViewActive) {
+            cell.overview.text = presenter.moviesResponse?.movies![index].overview ?? ""
+        }
+        // Configure image
+        if let imagePath = presenter.moviesResponse!.movies![index].posterPath {
+            guard let url = try? "https://image.tmdb.org/t/p/w154\(imagePath)".asURL() else {
+                fatalError("Error en la ruta de la imagen")
+            }
+            cell.imageMovie.af_setImage(withURL: url)
+        }
+    }
+}
+
+extension MoviesViewController : MoviesView {
+    func updateListOfMovies() {
+        listOfMovies.reloadAllData()
+    }
+    
+    func changeTypeOfList() {
+        // Configuro la lista dependiendo de si va a ser tabla o colección
+        (listOfMovies as? UIView)?.removeFromSuperview()
+        if(presenter.isTableViewActive) {
+            listOfMovies = ListTableView(frame: CGRect(x: 0, y: 0, width: (containerView.bounds.width), height: (containerView.bounds.height)))
+        } else {
+            listOfMovies = ListCollectionView(frame: CGRect(x: 0, y: 0, width: (containerView.bounds.width), height: (containerView.bounds.height)))
+        }
+        switchButton.title = presenter.listTitle
+        listOfMovies.listDelegate = self
+        listOfMovies.reloadAllData()
+        
+        // Agrego constraints a la vista agregada
+        addConstraintsToListOfMovies()
+    }
 }
